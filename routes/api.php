@@ -20,3 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('products', function() {
     return response(['Product 1', 'Product 2', 'Product 3'], 200);
 });
+
+Route::get('products/{product}', function($productId) {
+    return response()->json(['productId' => "{$productId}"], 200);
+});
