@@ -1,19 +1,54 @@
-import react, { Component } from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-
-/* An example react component */
+ 
+/* Main Component */
 class Main extends Component {
-    render () {
-        return (
-            <div>
-                <h3>All Products</h3>
-            </div>
-        );
+ 
+  constructor() {
+   
+    super();
+    //Initialize the state in the constructor
+    this.state = {
+        products: [],
     }
-}
-
-export default Main;
-
-if (document.getElementById('root')) {
-    ReactDOM.render(<Main/>, document.getElementById('root'));
+  }
+  /*componentDidMount() is a lifecycle method
+   * that gets called after the component is rendered
+   */
+  componentDidMount() {
+    /* fetch API in action */
+    fetch('/api/products')
+        .then(response => {
+            return response.json();
+        })
+        .then(products => {
+            //Fetched product is stored in the state
+            this.setState({ products });
+        });
+  }
+ 
+ renderProducts() {
+    return this.state.products.map(product => {
+        return (
+            /* When using list you need to specify a key
+             * attribute that is unique for each list item
+            */
+            <li key={product.id} >
+                { product.title } 
+            </li>      
+        );
+    })
+  }
+   
+  render() {
+   /* Some css code has been removed for brevity */
+    return (
+        <div>
+              <ul>
+                { this.renderProducts() }
+              </ul> 
+            </div> 
+       
+    );
+  }
 }
